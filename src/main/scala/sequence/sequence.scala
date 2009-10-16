@@ -20,7 +20,4 @@ class Sequence[S <: Symbol]( val name: String, private val symSeq : List[S] ) {
   
 }
 
-import bio.symbols.dna.Nucleotide
 
-class DNA( name: String, dnaSeq: List[Nucleotide] )
-extends Sequence[Nucleotide](name,dnaSeq)
