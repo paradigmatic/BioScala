@@ -26,11 +26,28 @@ class SequenceTest extends FunSuite with BeforeAndAfter {
   }
 
   test( "point mutation" ) {
-    var seq2 = seq.mutate( 2, G )
+    var seq2 = seq.substitute( 2, G )
     assert( seq != seq2 )
     assert( seq.length === seq2.length )
-    assert( seq(2) == T )
-    assert( seq2(2) == G )
+    assert( seq(2) === T )
+    assert( seq2(2) === G )
+  }
+
+  test( "insertion" ) {
+    var seq2 = seq.insert( 1, C )
+    assert( seq != seq2 )
+    assert( seq.length === seq2.length - 1 )
+    assert( seq2(1) === C )
+    assert( seq2(2) === A )
+  }
+
+  test( "deletion" ) {
+    var seq2 = seq.delete( 1 )
+    println(seq2)
+    assert( seq != seq2 )
+    assert( seq.length === seq2.length + 1 )
+    assert( seq2(1) === T )
+    assert( seq2(2) === A )
   }
 
   test( "String representation" ) {

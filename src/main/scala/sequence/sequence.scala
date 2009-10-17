@@ -12,8 +12,18 @@ class Sequence[S <: Symbol]( val name: String, private val symSeq : List[S] ) ex
 
   override def toString() = symSeq.map( _.toString ).mkString("")
 
-  def mutate( i: Int, newSym: S ): Sequence[S] = {
-    val newSymSeq = symSeq.take(2) ::: ( newSym :: symSeq.drop(3) )
+  def substitute( i: Int, newSym: S ): Sequence[S] = {
+    val newSymSeq = symSeq.take(i) ::: ( newSym :: symSeq.drop(i+1) )
+    new Sequence( name, newSymSeq )
+  }
+
+  def insert( i: Int, newSym: S ): Sequence[S] = {
+    val newSymSeq = symSeq.take(i) ::: ( newSym :: symSeq.drop(i) )
+    new Sequence( name, newSymSeq )
+  }
+
+  def delete( i: Int ): Sequence[S] = {
+    val newSymSeq = symSeq.take(i) ::: symSeq.drop(i+1)
     new Sequence( name, newSymSeq )
   }
 
