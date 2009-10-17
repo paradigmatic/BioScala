@@ -28,4 +28,8 @@ class DNATest extends FunSuite with BeforeAndAfter {
     assert( seq == seq2 )
   }
 
+  test( "complement" ) {
+    assert( seq.complement.toString === "ctatag" )
+  }
+
 }

@@ -10,19 +10,25 @@ abstract class Alphabet[S <: Symbol] {
 
 package dna {
 
-  abstract class Nucleotide extends Symbol
+  abstract class Nucleotide extends Symbol {
+    def complement(): Nucleotide
+  }
   
   object A extends Nucleotide {
     override def toString() = "a"
+    override def complement() = T
   }
   object C extends Nucleotide {
-      override def toString() = "c"
+    override def toString() = "c"
+    override def complement() = G
   }
   object G extends Nucleotide {
     override def toString() = "g"
+    override def complement() = C
   }
   object T extends Nucleotide {
     override def toString() = "t"
+    override def complement() = A
   }
 
   
