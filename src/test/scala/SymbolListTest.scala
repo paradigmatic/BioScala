@@ -25,5 +25,14 @@ class SymbolListTest extends FunSuite with BeforeAndAfter {
     assert( "atgc" === symLst.seqString )
   }
   
+  test( "Sublist" ) {
+    assert( "tg" === symLst.subList(2,3).seqString )
+  }
+
+  test( "Value equality" ) {
+    val lst2 = List( A, T, G, C )
+    val symLst2 = new SymbolList( lst )
+    assert( symLst2 == symLst )
+  }
 
 }

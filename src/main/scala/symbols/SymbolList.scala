@@ -11,10 +11,13 @@ class SymbolList[S <: Symbol] (private val lst: List[S]) extends Iterable[S] {
   override def elements() = lst.elements
   override def toList() = lst
 
+  def subList( start: Int, end: Int ) = new SymbolList( lst.slice( start-1, end ) )
+
   def seqString() = lst.mkString("")
 
   override def toString() = seqString
 
+  def ==(that: SymbolList[S]) = this.lst == that.lst
 
 }
 
