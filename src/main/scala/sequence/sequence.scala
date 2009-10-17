@@ -2,7 +2,7 @@ package bio
 
 import bio.symbols.Symbol
 
-class Sequence[S <: Symbol]( private val symSeq : List[S] ) extends Annotable {
+class Sequence[S <: Symbol]( val name: String, private val symSeq : List[S] ) extends Annotable {
   
   val length = symSeq.length
 
@@ -14,7 +14,7 @@ class Sequence[S <: Symbol]( private val symSeq : List[S] ) extends Annotable {
 
   def mutate( i: Int, newSym: S ): Sequence[S] = {
     val newSymSeq = symSeq.take(2) ::: ( newSym :: symSeq.drop(3) )
-    new Sequence( newSymSeq )
+    new Sequence( name, newSymSeq )
   }
 
   

@@ -8,7 +8,8 @@ import org.scalatest._
 class DNATest extends FunSuite with BeforeAndAfter {
 
   val dna = List( G, A, T, A, T , C )
-  val seq = new DNA( dna )
+  val name = "Dna fragment"
+  val seq = new DNA( name, dna )
   
   test( "String representation" ) {
     assert( "gatatc" === seq.toString )
