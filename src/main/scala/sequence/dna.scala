@@ -1,13 +1,14 @@
 package bio
 
+import bio.symbols._
 import bio.symbols.dna._
 
-class DNA( name: String, dnaSeq: List[Nucleotide] )
+class DNA( name: String, dnaSeq: SymbolList[Nucleotide] )
 extends Sequence[Nucleotide](name, dnaSeq) {
   
   def complement() = {
     val newName = "Complement of " + name
-    val newSymList = dnaSeq.map( _.complement )
+    val newSymList = new SymbolList( dnaSeq.map( _.complement ).toList ) //TODO: ugly
     new DNA( newName, newSymList )
   }
   

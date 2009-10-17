@@ -5,7 +5,7 @@ abstract class Symbol
 abstract class Alphabet[S <: Symbol] {
   
   def all: Set[S]
-  def parse( input: String ): List[S]
+  def parse( input: String ): SymbolList[S]
 }
 
 package dna {
@@ -48,7 +48,7 @@ package dna {
 	}
 	lst ::= nuc
       }
-      lst.reverse
+      new SymbolList( lst.reverse )
     }
     
   }

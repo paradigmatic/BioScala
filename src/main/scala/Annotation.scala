@@ -1,12 +1,21 @@
 package bio
 
-trait Annotable{
+trait Annotatable{
   
-  private var annotations = Map[String,String]()
+  val annotation = Annotation()
 
-  def getAnnotation( key: String ): String  = annotations( key )
-  def setAnnotation( key: String, value: String ): Unit = {  
-    annotations = ( annotations( key ) = value )
-  }
+}
+
+class Annotation( var map: Map[String,String] ) {
+
+  def apply( key: String ) = map( key ) 
+  def hasKey( key: String ) = map.contains(key)
+  def update( key: String, value: String ) = map = map(key)=value
+
+}
+
+object Annotation {
+
+  def apply() =  new Annotation( Map[String,String]() ) 
 
 }

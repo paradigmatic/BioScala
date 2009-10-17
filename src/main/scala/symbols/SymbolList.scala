@@ -17,7 +17,16 @@ class SymbolList[S <: Symbol] (private val lst: List[S]) extends Iterable[S] {
 
   override def toString() = seqString
 
-  def ==(that: SymbolList[S]) = this.lst == that.lst
+  def ==(that: SymbolList[S]) =
+    if (this.length != that.length ) {
+      println("Different size")
+      false
+    } else {
+      println("Same size")
+      (1 to length).forall( i => this(i) == that(i) )
+    }
+
+  override def hashCode() = lst.hashCode
 
 }
 

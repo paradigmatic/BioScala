@@ -7,7 +7,7 @@ import org.scalatest._
 
 class DNATest extends FunSuite with BeforeAndAfter {
 
-  val dna = List( G, A, T, A, T , C )
+  val dna = new SymbolList( List( G, A, T, A, T , C ) ) //TODO: ugly
   val name = "Dna fragment"
   val seq = new DNA( name, dna )
   
@@ -16,16 +16,12 @@ class DNATest extends FunSuite with BeforeAndAfter {
   }
 
   test( "String to Symbol list" ) {
-    val string = "atcgat"
+    val string = "gatatc"
     val lst = NucleotideAlphabet.parse(string)
-    assert( lst === List( A, T, C, G, A, T ) )
+    println( lst.getClass() )
+    println( dna.getClass() )
+    assert( lst == dna )
     //TODO: add exception test
-  }
-
-  test( "string to Dna Sequence ") {
-    val string = seq.toString
-    val seq2 = DNA.createFromString( "Dna frag 2", string )
-    assert( seq == seq2 )
   }
 
   test( "complement" ) {
