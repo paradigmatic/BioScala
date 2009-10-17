@@ -7,8 +7,7 @@ import org.scalatest._
 class SequenceTest extends FunSuite with BeforeAndAfter {
 
   val dna = List( G, A, T, A, T , C )
-  val name = "Test sequence"
-  val seq = new Sequence( name, dna )
+  val seq = new Sequence( dna )
   
   test( "Sequence  length" ) {
     assert( 6 === seq.length )
@@ -21,7 +20,7 @@ class SequenceTest extends FunSuite with BeforeAndAfter {
   test( "value equality" ) {
     val dna2 = List( G, A, T, A, T , C )
     val name2 = "Test sequence"
-    val seq2 = new Sequence( name, dna2 )
+    val seq2 = new Sequence(  dna2 )
     assert( seq == seq2 )
   }
 
@@ -35,6 +34,13 @@ class SequenceTest extends FunSuite with BeforeAndAfter {
 
   test( "String representation" ) {
     assert( "gatatc" === seq.toString )
+  }
+
+  test( "Annotations" ) {
+    val key = "name"
+    val name = "Test sequence"
+    seq.setAnnotation( key, name )
+    expect( name ) { seq.getAnnotation( key ) }
   }
 
 }
