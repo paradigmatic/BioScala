@@ -32,8 +32,9 @@ class SequenceTest extends FunSuite with BeforeAndAfter {
     val seq = new Sequence( "machin", symList )
     val key = "XX"
     val value = "yyyyy"
-    seq.annotation( key ) = value
-    assert( value == seq.annotation(key) )
+    val annot = seq.annotation( key ) = value
+    val seq2 = seq.updateAnnotation( annot )
+    assert( value == seq2.annotation(key) )
   }
 
 }

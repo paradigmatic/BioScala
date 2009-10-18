@@ -23,7 +23,7 @@ package bio
 
 trait Annotatable{
   
-  val annotation = Annotation()
+  def annotation: Annotation
 
 }
 
@@ -31,7 +31,12 @@ class Annotation( var map: Map[String,String] ) {
 
   def apply( key: String ) = map( key ) 
   def hasKey( key: String ) = map.contains(key)
-  def update( key: String, value: String ) = map = map(key)=value
+  def update( key: String, value: String ) =  {
+    val newMap = map(key) = value
+    new Annotation( newMap )
+  }
+  
+  override def toString() = "Annotations: " + map.toString
 
 }
 

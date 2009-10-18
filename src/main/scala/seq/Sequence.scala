@@ -23,9 +23,17 @@ package bio.seq
 
 import bio.sym._
 
-class Sequence[S <: Symbol]( val name: String, val symbolList : SymbolList[S] ) extends Annotatable {
+class Sequence[S <: Symbol]( val name: String, val symbolList : SymbolList[S], override val annotation: Annotation ) extends Annotatable {
+
+
+  def this( name: String, dnaSeq: SymbolList[S] ) = this( name, dnaSeq, Annotation() )
+
+  def updateAnnotation( newAnnotation: Annotation ) = new Sequence[S]( name, symbolList, newAnnotation )
 
   override def toString = symbolList.toString
+  
+
+
 }
 
 

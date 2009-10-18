@@ -24,9 +24,11 @@ package bio.seq
 import bio.sym._
 import bio.sym.dna._
 
-class DNA( name: String, dnaSeq: SymbolList[Nucleotide] )
-extends Sequence[Nucleotide](name, dnaSeq) {
+class DNA( name: String, dnaSeq: SymbolList[Nucleotide], annotation: Annotation )
+extends Sequence[Nucleotide](name, dnaSeq, annotation) {
   
+  def this( name: String, dnaSeq: SymbolList[Nucleotide] ) = this( name, dnaSeq, Annotation() )
+
   def complement() = {
     val newName = "Complement of " + name
     val newSymList = new SymbolList( dnaSeq.map( _.complement ).toList ) //TODO: ugly
