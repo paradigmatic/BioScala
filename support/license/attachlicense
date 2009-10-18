@@ -1,0 +1,178 @@
+#!/bin/sh
+#
+# attachlicense - script to add/remove license in given source file.
+# Copyright (C) 2009  "Mohan Raman" <mohan43u@gmail.com>
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# 
+
+USAGE="[USAGE]
+	attachlicense -f licensefile [-w] [-r] [-d description] 
+		[-y year] [-n name] [-e email] [-v] [file ...]
+"
+
+HELP="${USAGE}
+
+[DESCRIPTION]
+
+	-f 	Specify license filename as 'licensefile'.
+	-w	Write license to the file.
+	-r 	Remove license from the file.
+	-d	Description about the source file to add in license.
+	-y	Year to put in license.
+	-n	Name to be appeared in license.
+	-e 	Email to be appeared in license.
+q	-v	Verbose output.
+	file	Source file.
+
+[EXAMPLES]
+
+	$ attachlicense -f gplv2.txt -w sampleprogram.c
+
+	will attach contents of gplv2.txt into sampleprogram.c at top of
+	of the file.
+"
+
+# Defining variables and their default values
+
+RESOLVEDFILENAME="/tmp/attachlicense.$$"
+COMBINEDFILENAME="/tmp/attachlicense.$$$$"
+FINALDESCRIPTION=""
+NAME="${USER}"
+HOSTNAME=`hostname`
+YEAR=`date +"%Y"`
+EMAIL="${USER}@${HOSTNAME}"
+HAVELICENSE="0"
+WRITEMODE="0"
+REMOVEMODE="0"
+VERBOSEMODE="0"
+
+# Parsing Options
+
+while getopts 'f:wrvhd:y:n:e:' OPTION
+do
+	case "${OPTION}"
+	in
+		f) LICENSEFILENAME="${OPTARG}";;
+		w) WRITEMODE="1";;
+		d) DESCRIPTION="${OPTARG}";;
+		y) YEAR="${OPTARG}";;
+		n) NAME="${OPTARG}";;
+		e) EMAIL="${OPTARG}";;
+		r) REMOVEMODE="1";;
+		v) VERBOSEMODE="1";;
+		h) echo "${HELP}" && exit 0;;
+		\?) echo "${USAGE}" && echo "See 'attachlicense -h'" && \
+			exit 1;;
+		*) echo "${USAGE}" && echo "See 'attachlicense -h" && \
+			exit 1;;
+	esac
+done
+
+# If licensefile not given, say about that and exit.
+
+shift $((OPTIND - 1))
+test -z "${LICENSEFILENAME}" && \
+	echo "Specify licensefile using -f option..." && \
+	echo "See 'attachlicense -h'" && \
+	exit 1
+
+# Takeing filenames from ${@} variable
+
+for FILENAME
+do
+	# If user not given discription, put filename as description
+
+	FULLDESCRIPTION="${DESCRIPTION}"
+	test -z "${FULLDESCRIPTION}" && \
+		FULLDESCRIPTION=`basename "${FILENAME}"`
+
+	# Change <description,<year>,<name>,<email> tags in license
+	# file to their respective values
+
+	sed -n 	-e"1,\$s%<description>%${FULLDESCRIPTION}%g" \
+		-e"1,\$s%<year>%${YEAR}%g" \
+		-e"1,\$s%<name>%\"${NAME}\"%g" \
+		-e"1,\$s%<email>%<${EMAIL}>%g" \
+		-e"1,\$p" \
+		"${LICENSEFILENAME}" \
+		> "${RESOLVEDFILENAME}"
+
+	# If the file already contains 'Copyright' keyword, then 
+	# set HAVELICENSE="1". This will decide the rest of the
+	# tasks in this script.
+
+	grep "Copyright" "${FILENAME}" 2>/dev/null 1>/dev/null && \
+		HAVELICENSE="1"
+
+	# If file don't contain license and user not requested for
+	# removal, then attach license, if write mode is also present
+	# then modify the original file, otherwise, just display the
+	# file with attached license.
+
+	if test "${HAVELICENSE}" = "0" && test "${REMOVEMODE}" = "0"
+	then
+		if test "${WRITEMODE}" = "1"
+		then
+			cat "${RESOLVEDFILENAME}" "${FILENAME}" \
+				2>/dev/null 1>"${COMBINEDFILENAME}"
+
+			rm -f "${FILENAME}"
+	
+			cp "${COMBINEDFILENAME}" "${FILENAME}" && \
+			test "${VERBOSEMODE}" = "1" && \
+			echo "${LICENSEFILENAME} added to ${FILENAME}"
+		fi
+
+		if test "${WRITEMODE}" = "0"
+		then
+			cat "${RESOLVEDFILENAME}" "${FILENAME}" \
+				2>/dev/null
+		fi
+	fi
+
+	# If the file contains license, and user requested for removal,
+	# then delete license lines from file. If write mode is also present
+	# then save the changes in original source file. otherwise, just
+	# display the file with deleted contents.
+
+	if test "${HAVELICENSE}" = "1" && test "${REMOVEMODE}" = "1"
+	then
+		STARTLINE="1"
+		ENDLINE=`wc -l "${LICENSEFILENAME}" | tr -s ' ' | \
+			cut -d' ' -f1`
+
+		sed -n 	-e"${STARTLINE},${ENDLINE}d" \
+			-e"1,\$p" \
+			"${FILENAME}" \
+			> "${COMBINEDFILENAME}"
+
+		if test "${WRITEMODE}" = "1"
+		then
+			rm "${FILENAME}" && \
+			cp "${COMBINEDFILENAME}" "${FILENAME}" && \
+			test "${VERBOSEMODE}" = "1" && \
+			echo "${LICENSEFILENAME}" removed from "${FILENAME}"
+		fi
+
+		if test "${WRITEMODE}" = "0"
+		then
+			cat "${COMBINEDFILENAME}"
+		fi
+	fi
+done
+
+# Remove temperory files
+
+rm -f "${RESOLVEDFILENAME}" "${COMBINEDFILENAME}"

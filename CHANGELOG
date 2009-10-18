@@ -1,0 +1,11 @@
+
+0.0.2 (2009-10-18)
+==================
+
+  Added Locations.
+  Renambed packages: bio.sequence -> bio.seq, bio.symbols -> bio.sym
+
+0.0.1 (2009-10-17)
+==================
+
+  First draft
