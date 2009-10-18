@@ -1,4 +1,4 @@
-package bio.symbols
+package bio.sym
 
 class SymbolList[S <: Symbol] (private val lst: List[S]) extends Iterable[S] {
 

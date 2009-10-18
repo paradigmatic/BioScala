@@ -1,6 +1,6 @@
 import bio.seq.Sequence
-import bio.symbols._
-import bio.symbols.dna._
+import bio.sym._
+import bio.sym.dna._
 
 import org.scalatest._
 

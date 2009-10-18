@@ -1,7 +1,7 @@
 package bio.seq
 
-import bio.symbols._
-import bio.symbols.dna._
+import bio.sym._
+import bio.sym.dna._
 
 class DNA( name: String, dnaSeq: SymbolList[Nucleotide] )
 extends Sequence[Nucleotide](name, dnaSeq) {

@@ -1,6 +1,6 @@
 package bio.seq
 
-import bio.symbols._
+import bio.sym._
 
 class Sequence[S <: Symbol]( val name: String, val symbolList : SymbolList[S] ) extends Annotatable {
 

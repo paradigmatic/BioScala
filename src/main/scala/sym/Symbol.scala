@@ -1,4 +1,4 @@
-package bio.symbols
+package bio.sym
 
 abstract class Symbol
 
