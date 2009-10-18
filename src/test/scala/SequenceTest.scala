@@ -1,4 +1,4 @@
-import bio.Sequence
+import bio.seq.Sequence
 import bio.symbols._
 import bio.symbols.dna._
 

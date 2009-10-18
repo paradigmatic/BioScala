@@ -1,5 +1,5 @@
-import bio.Sequence
-import bio.DNA
+import bio.seq.Sequence
+import bio.seq.DNA
 import bio.symbols._
 import bio.symbols.dna._
 

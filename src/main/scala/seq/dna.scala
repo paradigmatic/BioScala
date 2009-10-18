@@ -1,4 +1,4 @@
-package bio
+package bio.seq
 
 import bio.symbols._
 import bio.symbols.dna._
