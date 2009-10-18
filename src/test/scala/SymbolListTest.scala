@@ -15,9 +15,12 @@ class SymbolListTest extends FunSuite with BeforeAndAfter {
     assert( 0 === empty.length )
   }
 
-  test( "Element accessor" ) {
+  test( "Element accessors" ) {
     for( i <- 0 until lst.length ) {
       assert( lst(i) === symLst( i + 1) )
+    }
+    for( i <- 0 until lst.length ) {
+      assert( lst(i) === symLst( new PointLocation( i+1)) )
     }
   }
 
@@ -27,6 +30,7 @@ class SymbolListTest extends FunSuite with BeforeAndAfter {
   
   test( "Sublist" ) {
     assert( "tg" === symLst.subList(2,3).seqString )
+    assert( "tg" === symLst.subList( new Location( 2,3 ) ).seqString )
   }
 
   test( "Value equality" ) {

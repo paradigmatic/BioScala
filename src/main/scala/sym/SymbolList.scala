@@ -6,12 +6,20 @@ class SymbolList[S <: Symbol] (private val lst: List[S]) extends Iterable[S] {
   override val hasDefiniteSize = true
   
   // Biological index notation
-  def apply( i: Int ) = lst(i-1)
+  def apply( i: Int ): S = lst(i-1)
+  /**
+   * Retrives a sing Symbol using a PointLocation object
+   */
+  def apply( point: PointLocation ): S = apply( point.position ) 
 
   override def elements() = lst.elements
   override def toList() = lst
 
-  def subList( start: Int, end: Int ) = new SymbolList( lst.slice( start-1, end ) )
+  def subList( start: Int, end: Int ): SymbolList[S] = new SymbolList( lst.slice( start-1, end ) )
+  /**
+   * Returns a sub symbol list by passing a location object
+   */
+  def subList( location: Location ): SymbolList[S] = subList( location.start, location.end )
 
   def seqString() = lst.mkString("")
 
